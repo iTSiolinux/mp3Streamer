@@ -1,0 +1,68 @@
+:root {
+    --color-1: #151829;
+    --color-2: #252c45;
+    --color-3: #3c4b6b;
+    --color-4: #596e8f;
+    --color-5: #7293a6;
+    --color-6: #95bac2;
+    --color-7: #0b2566;
+    --color-8: #12498c;
+    --color-9: #1c7199;
+    --color-10: #319fb0;
+    --color-11: #86d9d5;
+    --color-12: #0d323b;
+    --color-13: #114d44;
+    --color-14: #127a3e;
+    --color-15: #5ab03f;
+    --color-16: #b5d96c;
+    --color-17: #590c25;
+    --color-18: #9c2219;
+    --color-19: #bd622a;
+    --color-20: #e6ba39;
+    --color-21: #eddc6b;
+    --color-22: #300633;
+    --color-23: #61135a;
+    --color-24: #8f2b76;
+    --color-25: #b04d8a;
+    --color-26: #d17997;
+    --color-27: #e0a2ad;
+    --color-28: #732816;
+    --color-29: #964a2c;
+    --color-30: #ba7947;
+    --color-31: #d9b484;
+    --color-32: #fffece;
+}
+
+html,
+body {
+    position: relative;
+    display: inherit;
+    width: 100vw;
+    height: 100vh;
+
+    overflow: hidden;
+    background-color: var(--color-11);
+    padding: 0;
+}
+
+div.play {
+    position: relative;
+    display: block;
+    width: 64px;
+    height: 64px;
+
+    border-radius: 50%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-image: url("/play.png");
+}
+
+div.play:hover {
+    border-color: var(--color-5);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+div.play:active {
+    transform: translateY(1px);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+}
