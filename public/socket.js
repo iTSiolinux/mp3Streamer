@@ -10,26 +10,29 @@ socket.addEventListener("error", (e) => {
 
 socket.addEventListener("open", (e) => {
     console.warn("opened the socket: ", e);
-    socket.send('play');
 });
 
 socket.addEventListener("message", (e) => {
     const unParsedQuery = e.data;
     const parsedQuery = JSON.parse(unParsedQuery);
 
-    if (parsedQuery.event == "binary-music"){
-        binaryData.push(new Uint8Array(parsedQuery.mp3));
+    const playChunk = (i = 0) => {
+        const binary = binaryData[i];
+        const formmatedUrl = `data:audio/mpeg;base64,${binary}`;
+        
+        document.getElementById("music").src = formmatedUrl;
+
+
+        setTimeout(playChunk, 1000 * 30, i++)
     }
 
-    if (binaryData.length * chunkSize >= totalFileSize) {
-      let blob = new Blob(binaryData, { type: 'audio/mpeg' });
-      let url = URL.createObjectURL(blob);
-      
-      document.getElementById('yourAudioElementId').src = url;
-      
-      // Revoke the object URL when no longer needed
-      setTimeout(() => URL.revokeObjectURL(url), 60000); // Wait for some time before revoking the URL
-      binaryData = []; // Reset the binaryData array
+
+    if (parsedQuery.event == "binary-music"){
+        binaryData.push(parsedQuery.mp3);
+        console.log(parsedQuery)
+        playChunk()
+    } else if (parsedQuery.event == "meta-music"){
+        socket.meta = parsedQuery.data;
     }
 });
 

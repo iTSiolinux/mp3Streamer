@@ -18,7 +18,7 @@ wsInit(app);
 
 app.ws('/music', (client, req) => {
     const filePath = __dirname + '/public/music.mp3';
-    const chunkSize = 10240;
+    const chunkSize = 1024 * 500;
     client.position = 0;
 
     client.on('message', (message) => {
@@ -38,19 +38,49 @@ app.ws('/music', (client, req) => {
     });
 
     const awakeMusic = () => {
+        console.log("awaking the music loop")
+        sendMeta()
         sendChunk()
-        client.interval = setInterval(sendChunk, 1000 / 60);
+        client.interval = setInterval(sendChunk, 1000 / 6);
     }
 
     const sendMeta = () => {
-        
+        const META = {
+            fileSize: fs.statSync(filePath).size,
+            format: "mp3",
+            chunkSize: chunkSize
+        }
+
+        client.meta = META;
+        const MSG2SEND = JSON.stringify({ event: "meta-music", data: META })
+        client.send(MSG2SEND)
     }
 
+    let last = null
+
     const sendChunk = () => {
-        const chunk = fs.readFileSync(filePath, { encoding: 'binary', start: client.position, end: client.position += chunkSize });
-        const MSG2send = JSON.stringify({ event: 'binary-music', mp3: chunk })
+        remainingFileSize = client.meta.fileSize - client.position;
+
+        if (remainingFileSize <= 0) {
+            clearInterval(client.interval)
+            console.log("file sending is done;")
+            return;
+        }
+
+        console.log(`[ ${(client.meta.fileSize / 1024).toFixed(0)} MB / ${(remainingFileSize / 1024).toFixed(0)} MB ]`);
+
+        const chunkSizeToRead = Math.min(remainingFileSize, chunkSize);
+
+        console.log({start: client.position, end: (client.position + chunkSizeToRead)})
+
+        const chunk = fs.readFileSync(filePath, { encoding: 'base64', start: client.position, end: (client.position += chunkSizeToRead) });
+        if (last !== chunk){
+            last = chunk
+            console.log("bruhhhh")
+        }
+
+        const MSG2send = JSON.stringify({ event: "binary-music", mp3: chunk });
         client.send(MSG2send);
-        client.position += chunkSize;
     };
 });
 
