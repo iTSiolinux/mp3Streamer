@@ -1,0 +1,12 @@
+div.display {
+    display: grid;
+    
+    flex: 1;
+    background-color: var(--color-3);
+}
+
+div.display > div.header {
+    background-color: var(--color-11);
+    width: fit-content;
+    height: 16px;
+}

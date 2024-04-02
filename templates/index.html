@@ -3,17 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Music streamer</title>
+    <title>Music player</title>
     <link rel="shortcut icon" href="/favicon.png">
     <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/player_bar.css">
+    <link rel="stylesheet" href="/display.css">
 
-    <script src="/socket.js"></script>
+    <script src="/music.js" defer></script>
 </head>
 <body>
-    <h1>Click to play a music from the websocket!</h1>
-
-    <div class="play" onclick="socket.send('play')"></div>
-
-    <audio src="" id="music"> </audio>
+    <div class="display">
+        <div id="header">
+            <input type="text" id="box" placeholder="Search for a song">
+        </div>
+        <div class="content">
+            <div class="fast_suggests">
+                <div class="inline_suggests">
+                    <!-- Suggested songs displayed here -->
+                    <div class="song">Song 1</div>
+                    <div class="song">Song 2</div>
+                    <div class="song">Song 3</div>
+                </div>
+            </div>
+            <div class="queue">
+                <h2>Queue</h2>
+                <!-- Display the queue of songs here -->
+                <div class="song">Queued Song 1</div>
+                <div class="song">Queued Song 2</div>
+                <div class="song">Queued Song 3</div>
+            </div>
+            <div class="current_song">
+                <h2>Current Song</h2>
+                <!-- Display the current song here -->
+                <div class="song">Current Song: Song Name</div>
+            </div>
+        </div>
+    </div>
+    <div class="player_bar">
+        <div class="shadow"></div>
+        <div class="player_gui">
+            <div class="left"></div>
+            <div id="playToggle"></div>
+            <div class="right"></div>
+        </div>
+    </div>
 </body>
 </html>

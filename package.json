@@ -11,5 +11,8 @@
   "dependencies": {
     "express": "^4.19.2",
     "express-ws": "^5.0.2"
+  },
+  "scripts": {
+    "start": "node index.js"
   }
 }
