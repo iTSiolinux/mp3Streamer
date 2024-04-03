@@ -39,15 +39,15 @@ div.player_gui > div.left, div.player_gui > div.right, div.player_gui > div#play
 }
 
 div.left {
-    background-image: url(/left.png);
+    background-image: url(/IMG/left.png);
 }
 
 div.right {
-    background-image: url(/right.png);
+    background-image: url(/IMG/right.png);
 }
 
 div#playToggle {
-    background-image: url(/play.png);
+    background-image: url(/IMG/play.png);
 }
 
 div.player_gui > div.left:hover, div.player_gui > div.right:hover, div.player_gui > div#playToggle:hover {
