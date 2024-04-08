@@ -5,22 +5,27 @@ class QueueItem extends HTMLElement {
         const songName = this.getAttribute('song') || 'Default Song';
         const artistName = this.getAttribute('artist') || 'Default Artist';
 
-        this.shadowRoot.innerHTML =
-        ` 
+        this.shadowRoot.innerHTML = /* html */
+            ` 
+            <div class="data">            
+                <h2>${songName}</h2>
+                <p>${artistName}</p>
+            </div>
+            <div class="three_dots squishy_button"></div>
             <style>
                 :host {
                     position: relative;
                     display: flex;
-                    width: fit-content;
                     height: fit-content;
 
                     flex-wrap: wrap;
                     padding: 10px;
-                    border: 1px solid #ccc; /* Example border */
-                    border-radius: 5px; /* Example border radius */
+                    border: 1px solid #ccc;
+                    border-radius: 5px; 
                 }
                 div.data {
                     order: -1;
+                    margin-right: 10px;
                 }
                 
                 div.three_dots {
@@ -31,24 +36,51 @@ class QueueItem extends HTMLElement {
                     background-size: cover;
                     background-image: url(/IMG/dots.png);
                     margin-top: 5%; 
+                    margin-left: auto;
                 }
 
                 p, h2 {
                     margin: 0;
                     height: fit-content;
                 }
-            </style>
 
-            <div class="data">            
-                <h2>${songName}</h2>
-                <p>${artistName}</p>
-            </div>
-            <div class="three_dots"></div>
+                .squishy_button {
+                    width: 64px;
+                    height: 64px;
+
+                    transition: 250ms;
+                    background-color: var(--color-27);
+                    background-repeat: no-repeat;
+                    background-size: cover;
+                    border-radius: 15%;
+                }
+
+                .squishy_button:hover {
+                    background-color: var(--color-26);
+                    scale: 1.05;
+                    border: 2px solid black;
+                    transition: 250ms;
+                }
+
+                .squishy_button:active {
+                    background-color: var(--color-25);
+                    scale: 1.1;
+                    transition: 250ms;
+                }
+            </style>
         `;
+
+        this.shadowRoot.querySelector('.three_dots').addEventListener('click', () => {
+            this.displayContextMenu();
+        });
     }
 
     static get observedAttributes() {
-        return ['song', 'artist']; // Specify the attributes to observe for changes
+        const observedAttributesArray = []
+        for (const attribute in this) {
+            observedAttributesArray.push(attribute)
+        }
+        return observedAttributesArray;
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
@@ -59,6 +91,10 @@ class QueueItem extends HTMLElement {
             const artistParagraph = this.shadowRoot.querySelector('p');
             artistParagraph.textContent = newValue;
         }
+    }
+
+    displayContextMenu () {
+        
     }
 }
 

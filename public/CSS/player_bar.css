@@ -27,7 +27,7 @@ div.player_gui {
     align-content: center;
 }
 
-div.player_gui > div.left, div.player_gui > div.right, div.player_gui > div#playToggle {
+.squishy_button {
     width: 64px;
     height: 64px;
 
@@ -36,6 +36,18 @@ div.player_gui > div.left, div.player_gui > div.right, div.player_gui > div#play
     background-repeat: no-repeat;
     background-size: cover;
     border-radius: 15%;
+}
+
+.squishy_button:hover {
+    background-color: var(--color-26);
+    scale: 1.05;
+    transition: 250ms;
+}
+
+.squishy_button:active {
+    background-color: var(--color-25);
+    scale: 1.1;
+    transition: 250ms;
 }
 
 div.left {
@@ -50,14 +62,3 @@ div#playToggle {
     background-image: url(/IMG/play.png);
 }
 
-div.player_gui > div.left:hover, div.player_gui > div.right:hover, div.player_gui > div#playToggle:hover {
-    background-color: var(--color-26);
-    scale: 1.05;
-    transition: 250ms;
-}
-
-div.player_gui > div.left:active, div.player_gui > div.right:active, div.player_gui > div#playToggle:active {
-    background-color: var(--color-25);
-    scale: 1.1;
-    transition: 250ms;
-}

@@ -3,7 +3,7 @@ div.display > div#header {
     width: 100vw;
     height: fit-content;
 
-    background-color: var(--color-5);
+    background-color: var(--color-2);
     padding: 16px;
     justify-content: center;
 
