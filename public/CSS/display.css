@@ -12,8 +12,7 @@ div#queue {
     height: fit-content;
     background-color: var(--color-26);
     margin-top: 53px;
-    padding: 2%;
-    border-radius: 15%;
+    padding: 1%;
 }
 
 div#queue > h2 {

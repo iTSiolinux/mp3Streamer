@@ -10,11 +10,11 @@ class QueueItem extends HTMLElement {
             <style>
                 :host {
                     position: relative;
-                    display: flex;
-                    flex-direction: column; /* Display children in a column */
-                    gap: 5px; /* Gap between children */
+                    display: grid;
                     width: fit-content;
                     height: fit-content;
+
+                    grid-template-columns: auto auto;
                     padding: 10px;
                     border: 1px solid #ccc; /* Example border */
                     border-radius: 5px; /* Example border radius */
@@ -26,14 +26,15 @@ class QueueItem extends HTMLElement {
                 div {
                     width: 32px;
                     height: 32px;
+
                     background-repeat: no-repeat;
                     background-size: cover;
                     background-image: url(/IMG/dots.png);
                 }
             </style>
             <h2>${songName}</h2>
-            <p>${artistName}</p>
             <div></div>
+            <p>${artistName}</p>
         `;
     }
 }
