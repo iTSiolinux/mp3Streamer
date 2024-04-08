@@ -1,20 +1,36 @@
 div.display {
     display: grid;
-    
+
     flex: 1;
     background-color: var(--color-3);
 }
- 
+
 div#queue {
     position: fixed;
     display: grid;
     width: fit-content;
-    height: fit-content;
+    max-height: 50%;
+
     background-color: var(--color-26);
     margin-top: 53px;
     padding: 1%;
+    gap: 4px;
+    overflow: auto;
 }
 
-div#queue > h2 {
+div#queue::-webkit-scrollbar {
+    width: 8px;
+}
+
+div#queue::-webkit-scrollbar-thumb {
+    background-color: var(--color-27);
+}
+
+div#queue::-webkit-scrollbar-thumb:hover {
+    background-color: white;
+
+}
+
+div#queue>h2 {
     justify-self: center;
 }

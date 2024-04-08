@@ -10,32 +10,55 @@ class QueueItem extends HTMLElement {
             <style>
                 :host {
                     position: relative;
-                    display: grid;
+                    display: flex;
                     width: fit-content;
                     height: fit-content;
 
-                    grid-template-columns: auto auto;
+                    flex-wrap: wrap;
                     padding: 10px;
                     border: 1px solid #ccc; /* Example border */
                     border-radius: 5px; /* Example border radius */
                 }
-                h2 {
-                    margin-bottom: 5px; /* Bottom margin for separation */
+                div.data {
+                    order: -1;
                 }
                 
-                div {
+                div.three_dots {
                     width: 32px;
                     height: 32px;
 
                     background-repeat: no-repeat;
                     background-size: cover;
                     background-image: url(/IMG/dots.png);
+                    margin-top: 5%; 
+                }
+
+                p, h2 {
+                    margin: 0;
+                    height: fit-content;
                 }
             </style>
-            <h2>${songName}</h2>
-            <div></div>
-            <p>${artistName}</p>
+
+            <div class="data">            
+                <h2>${songName}</h2>
+                <p>${artistName}</p>
+            </div>
+            <div class="three_dots"></div>
         `;
+    }
+
+    static get observedAttributes() {
+        return ['song', 'artist']; // Specify the attributes to observe for changes
+    }
+
+    attributeChangedCallback(name, oldValue, newValue) {
+        if (name === 'song') {
+            const songHeading = this.shadowRoot.querySelector('h2');
+            songHeading.textContent = newValue;
+        } else if (name === 'artist') {
+            const artistParagraph = this.shadowRoot.querySelector('p');
+            artistParagraph.textContent = newValue;
+        }
     }
 }
 
