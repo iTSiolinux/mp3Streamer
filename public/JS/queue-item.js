@@ -94,7 +94,12 @@ class QueueItem extends HTMLElement {
     }
 
     displayContextMenu () {
-        
+        this.contextElem = document.createElement("div");
+        const Elem = this.contextElem;
+
+        Elem.classList.add("context-queue-item");
+
+        document.getElementById("queue").appendChild(Elem);
     }
 }
 

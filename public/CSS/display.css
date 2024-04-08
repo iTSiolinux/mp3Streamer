@@ -18,6 +18,13 @@ div#queue {
     overflow: auto;
 }
 
+.context-queue-item {
+    position: absolute;
+    display: block;
+    width: 64px;
+    height: 64px;
+}
+
 div#queue::-webkit-scrollbar {
     width: 8px;
 }
