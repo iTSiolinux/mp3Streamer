@@ -57,15 +57,22 @@ class QueueItem extends HTMLElement {
 
                 .squishy_button:hover {
                     background-color: var(--color-26);
-                    scale: 1.05;
-                    border: 2px solid black;
                     transition: 250ms;
                 }
 
                 .squishy_button:active {
                     background-color: var(--color-25);
-                    scale: 1.1;
                     transition: 250ms;
+                }
+
+                .context-queue-item {
+                    position: absolute;
+                    display: block;
+                    width: 100%;
+                    height: 100%;
+                    z-index: 1;
+                    background-color: white;
+                    left: 0;
                 }
             </style>
         `;
@@ -99,9 +106,20 @@ class QueueItem extends HTMLElement {
 
         Elem.classList.add("context-queue-item");
 
-        document.getElementById("queue").appendChild(Elem);
+        
+
+        this.shadowRoot.querySelector('.three_dots').appendChild(Elem)
+
+        function clickOutsideHandler(event) {
+            if (!Elem.contains(event.target)) {
+                Elem.remove();
+            }
+        }
+        
+        document.addEventListener("mouseout", clickOutsideHandler);
     }
 }
 
 // Define the custom element
 customElements.define('queue-item', QueueItem);
+
