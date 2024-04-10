@@ -9,6 +9,8 @@ div#queue {
     position: fixed;
     display: grid;
     width: fit-content;
+    width: 20%;
+    height: 76.55%;
     max-height: 76.55%;
     max-width: 20%;
 

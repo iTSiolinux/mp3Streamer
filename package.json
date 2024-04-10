@@ -4,15 +4,13 @@
   "description": "This package built to stream mp3 files like any modern music site to give an good music streamer with ads or something",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js"
   },
   "author": "iTSiolinux",
   "license": "MIT",
   "dependencies": {
     "express": "^4.19.2",
-    "express-ws": "^5.0.2"
-  },
-  "scripts": {
-    "start": "node index.js"
+    "express-ws": "^5.0.2",
+    "yt-search": "^2.10.4"
   }
 }
