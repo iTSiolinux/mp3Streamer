@@ -1,3 +1,4 @@
+// player toggle
 const playBtn = document.getElementById("playToggle");
 playBtn.style.backgroundImage = "url('/IMG/play.png')";
 
@@ -11,10 +12,8 @@ playBtn.addEventListener("click", () => {
     }
 });
 
-
-
+// search box
 const searchBox = document.getElementById("search")
-
 searchBox.addEventListener("keydown", (event) => {
     if (event.key === "Enter") {
         if (searchBox.value.length > 4){
@@ -26,7 +25,9 @@ searchBox.addEventListener("keydown", (event) => {
                 return response.json();
             })
             .then(data => {
-                temp = data
+                if (searchRes.status == "succes"){
+                    appendSearchRes(data)
+                }
             })
             .catch(error => {
                 console.error('Error:', error);
@@ -42,3 +43,12 @@ searchBox.addEventListener("keydown", (event) => {
         }
     }
 });
+
+function appendSearchRes(dataSet) {
+    dataSet.data.forEach(vid => {
+        const DIV = document.createElement("div")
+
+        DIV.classList.add("vid_item")
+        
+    });
+}
