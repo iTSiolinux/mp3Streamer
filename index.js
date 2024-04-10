@@ -28,7 +28,7 @@ app.get("/search", (req, res) => {
             res.json(DATA)
         } else {
             DATA.status = "succes"
-
+            console.log("success " + query)
             const first3vids = result?.videos.slice(0, 3)
 
             DATA.data = first3vids

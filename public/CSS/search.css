@@ -1,9 +1,6 @@
 div#searchRes {
     grid-area: SearchRes;
-}
-
-.vid_item {
-    background-color: white;
-    width: 100px;
-    height: 100px;
+    display: flex;
+    flex-direction: column; 
+    gap: 10px;
 }

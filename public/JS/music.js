@@ -52,12 +52,13 @@ function appendSearchRes(dataSet) {
     }
 
     dataSet.data.forEach(vid => {
-        const DIV = document.createElement("div")
+        const SEARCH_ITEM = document.createElement("search-item")
+        SEARCH_ITEM.setAttribute("title", vid.title)
+        SEARCH_ITEM.setAttribute("author", vid.author.name)
+        SEARCH_ITEM.setAttribute("image", vid.thumbnail)
+        console.log(vid.thumbnail)
 
-        DIV.classList.add("vid_item")
-        
-        DIV.textContent = vid.title
-        document.getElementById("searchRes").append(DIV)
+        document.getElementById("searchRes").append(SEARCH_ITEM)
     });
 
     
