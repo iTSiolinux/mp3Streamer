@@ -25,9 +25,11 @@ searchBox.addEventListener("keydown", (event) => {
                 return response.json();
             })
             .then(data => {
-                if (searchRes.status == "succes"){
+                if (data.status == "succes"){
+                    temp = data
                     appendSearchRes(data)
                 }
+
             })
             .catch(error => {
                 console.error('Error:', error);
@@ -45,10 +47,18 @@ searchBox.addEventListener("keydown", (event) => {
 });
 
 function appendSearchRes(dataSet) {
+    while (document.getElementById("searchRes").firstChild) {
+        document.getElementById("searchRes").removeChild(document.getElementById("searchRes").firstChild);
+    }
+
     dataSet.data.forEach(vid => {
         const DIV = document.createElement("div")
 
         DIV.classList.add("vid_item")
         
+        DIV.textContent = vid.title
+        document.getElementById("searchRes").append(DIV)
     });
+
+    
 }
