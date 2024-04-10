@@ -1,39 +1,12 @@
 div.display {
-    display: grid;
+    display: grid; 
 
+    grid-template-columns: 0.6fr 1.2fr 1fr;
+    grid-template-rows: 0.1fr 2.1fr;
+    gap: 0px 0px; 
+    grid-template-areas: 
+      "Header Header Header"
+      "Queue SearchRes SearchRes"; 
     flex: 1;
     background-color: var(--color-3);
-}
-
-div#queue {
-    position: fixed;
-    display: grid;
-    width: fit-content;
-    width: 20%;
-    height: 76.55%;
-    max-height: 76.55%;
-    max-width: 20%;
-
-    background-color: var(--color-26);
-    margin-top: 53px;
-    padding: 1%;
-    gap: 4px;
-    overflow: auto;
-}
-
-div#queue::-webkit-scrollbar {
-    width: 8px;
-}
-
-div#queue::-webkit-scrollbar-thumb {
-    background-color: var(--color-27);
-}
-
-div#queue::-webkit-scrollbar-thumb:hover {
-    background-color: white;
-
-}
-
-div#queue>h2 {
-    justify-self: center;
 }

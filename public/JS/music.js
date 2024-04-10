@@ -26,7 +26,7 @@ searchBox.addEventListener("keydown", (event) => {
                 return response.json();
             })
             .then(data => {
-                console.log(data);
+                temp = data
             })
             .catch(error => {
                 console.error('Error:', error);

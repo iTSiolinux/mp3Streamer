@@ -6,7 +6,7 @@ div.display > div#header {
     background-color: var(--color-2);
     padding: 16px;
     justify-content: center;
-
+    grid-area: Header;
 }
 
 div#header > input#search {
