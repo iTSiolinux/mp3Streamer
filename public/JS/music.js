@@ -1,3 +1,49 @@
+// Queue class
+class QueueManager {
+    static Awake () {
+        this.index = 0;
+        this.queue = [];
+        this.isPlaying = false
+    }
+
+    static Play () {
+        if (!this.isPlaying && this.queue.length > 0){
+            this.index = this.index % this.queue.length;
+            
+            playBtn.style.backgroundImage = "url('/IMG/pause.png')"; 
+            this.isPlaying = true;
+            this.queue[this.index]?.play()
+        }
+    }
+
+    static Pause () {
+        if (this.isPlaying){
+            playBtn.style.backgroundImage = "url('/IMG/play.png')";
+            this.isPlaying = false;
+            this.queue[this.index]?.pause()
+        }
+    }
+
+    static AddSong (songElem) {
+        this.queue.push(songElem)
+    }
+
+    static RemoveSong (songElem) {
+        const index = this.queue.findIndex(song => song === songElem);
+        if (index !== -1) {
+            this.queue.splice(index, 1);
+        }
+        return index;
+    }
+
+    static UpdatePlayerBar (songDuration, songCurrentTime) {
+        const barShadow = document.querySelector("body > div.player_bar > div.shadow");
+        barShadow.style.width = `${songCurrentTime / songDuration}%`
+    }
+}
+
+QueueManager.Awake()
+
 // player toggle
 const playBtn = document.getElementById("playToggle");
 playBtn.style.backgroundImage = "url('/IMG/play.png')";
@@ -6,9 +52,9 @@ playBtn.addEventListener("click", () => {
     const backgroundImage = getComputedStyle(playBtn).backgroundImage;
 
     if (backgroundImage.includes("play.png")) { 
-        playBtn.style.backgroundImage = "url('/IMG/pause.png')"; 
+        QueueManager.Play()
     } else {
-        playBtn.style.backgroundImage = "url('/IMG/play.png')";
+        QueueManager.Pause()
     }
 });
 
@@ -61,6 +107,5 @@ function appendSearchRes(dataSet) {
 
         document.getElementById("searchRes").append(SEARCH_ITEM)
     });
-
-    
 }
+

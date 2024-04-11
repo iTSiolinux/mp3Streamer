@@ -1,5 +1,3 @@
-let temp = null
-
 class QueueItem extends HTMLElement {
     constructor() {
         super();
@@ -11,8 +9,6 @@ class QueueItem extends HTMLElement {
         const songName = this.getAttribute('song') || 'Default Song';
         const artistName = this.getAttribute('artist') || 'Default Artist';
         let time = parseInt(this.getAttribute('time')) || 0; 
-
-        console.log(time)
 
         // Convert time to minutes and seconds
         const minutes = Math.floor(time / 60);
@@ -134,7 +130,7 @@ class QueueItem extends HTMLElement {
     }
 
     static get observedAttributes() {
-        return ['song', 'artist', 'time'];
+        return ['song', 'artist', 'time', 'uuid'];
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
@@ -149,6 +145,8 @@ class QueueItem extends HTMLElement {
             const seconds = time % 60;
             const formattedTime = `${minutes < 10 ? '' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
             this.shadowRoot.querySelector('p:nth-of-type(2)').textContent = formattedTime;
+        } else if (name === 'uuid'){
+            this.fetchMP3()
         }
     }
 
@@ -227,32 +225,53 @@ class QueueItem extends HTMLElement {
             if (ID == 2) {
                 this.style.animation = "scaleEffectReverse 1s forwards"
                 setTimeout(() => {
+                    if (QueueManager.index == QueueManager.RemoveSong(this)){
+                        QueueManager.Pause()
+                    }
+                    clearInterval(this.loop)
+                    this.pause()
                     this.remove()
                 }, 900)
             }
         }
     }
 
-    play() {
+    fetchMP3() {
         const uuid = this.getAttribute("uuid");
         fetch(`/music?uuid=${uuid}`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
-
                 return response.blob(); // Get the response body as a blob
             })
             .then(blob => {
                 const audioURL = URL.createObjectURL(blob); // Create a URL for the blob
                 const audio = new Audio(audioURL); // Create a new Audio object
-                audio.play(); // Play the audio
+                this.mp3 = audio;
+                console.log(this.mp3)
             })
             .catch(error => {
                 console.error('There was a problem with the fetch operation:', error);
             });
     }
-    
+
+    play () {
+        this.mp3.play()
+        this.loop = setInterval(()=>{
+            QueueManager.UpdatePlayerBar(this.mp3.duration, this.mp3.currentTime)
+            if (this.mp3.duration == this.mp3.currentTime){
+                QueueManager.Pause()
+                QueueManager.index++;
+                QueueManager.Play()
+            }
+        }, 5)
+    }
+
+    pause() {
+        clearInterval(this.loop)
+        this.mp3.pause()
+    }
 }
 
 // Define the custom element

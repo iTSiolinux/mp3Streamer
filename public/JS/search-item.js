@@ -111,6 +111,7 @@ class SearchItem extends HTMLElement {
         queue_item.setAttribute("time", this.getAttribute('time'));
         queue_item.setAttribute("uuid", this.getAttribute('uuid'));
         document.getElementById("queue").appendChild(queue_item);
+        QueueManager.AddSong(queue_item)
     }
 }
 
