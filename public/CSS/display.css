@@ -9,4 +9,6 @@ div.display {
       "Queue SearchRes SearchRes"; 
     flex: 1;
     background-color: var(--color-3);
+    overflow-y: auto;
+    overflow-x: clip;
 }

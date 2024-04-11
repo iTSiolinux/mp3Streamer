@@ -3,4 +3,6 @@ div#searchRes {
     display: flex;
     flex-direction: column; 
     gap: 10px;
+    box-sizing: content-box;
+    overflow-y: auto;
 }

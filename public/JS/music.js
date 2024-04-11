@@ -56,7 +56,8 @@ function appendSearchRes(dataSet) {
         SEARCH_ITEM.setAttribute("title", vid.title)
         SEARCH_ITEM.setAttribute("author", vid.author.name)
         SEARCH_ITEM.setAttribute("image", vid.thumbnail)
-        console.log(vid.thumbnail)
+        SEARCH_ITEM.setAttribute("uuid", vid.videoId)
+        SEARCH_ITEM.setAttribute("time", vid.seconds)
 
         document.getElementById("searchRes").append(SEARCH_ITEM)
     });

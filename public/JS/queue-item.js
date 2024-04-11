@@ -3,12 +3,26 @@ let temp = null
 class QueueItem extends HTMLElement {
     constructor() {
         super();
+        this.buildShadowRoot()
+    }
+
+    buildShadowRoot() {
         this.attachShadow({ mode: 'open' });
         const songName = this.getAttribute('song') || 'Default Song';
         const artistName = this.getAttribute('artist') || 'Default Artist';
+        let time = parseInt(this.getAttribute('time')) || 0; 
+
+        console.log(time)
+
+        // Convert time to minutes and seconds
+        const minutes = Math.floor(time / 60);
+        const seconds = time % 60;
+
+        // Format time as mm:ss
+        const formattedTime = `${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
 
         const CSS = /* css */
-        `
+            `
         :host {
             position: relative;
             display: flex;
@@ -99,70 +113,71 @@ class QueueItem extends HTMLElement {
                 opacity: 0; /* Hide with zero opacity */
             }
         }
-        `
+            `
 
-        const HTML = /* html */       
-        ` 
+        const HTML = /* html */ 
+        `
             <div class="data">            
                 <h2>${songName}</h2>
                 <p>${artistName}</p>
+                <p>${formattedTime}</p>
             </div>
             <div class="three_dots squishy_button"></div>
-            <style> ${CSS} </style>
-        `
+            <style>${CSS}</style>
+        `;
 
         this.shadowRoot.innerHTML = HTML;
-;
 
-        this.shadowRoot.querySelector('.three_dots').addEventListener('mouseup', () => {
+        this.shadowRoot.querySelector('.three_dots').addEventListener('click', () => {
             this.openContext();
         });
     }
 
     static get observedAttributes() {
-        const observedAttributesArray = []
-        for (const attribute in this) {
-            observedAttributesArray.push(attribute)
-        }
-        return observedAttributesArray;
+        return ['song', 'artist', 'time'];
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
         if (name === 'song') {
-            const songHeading = this.shadowRoot.querySelector('h2');
-            songHeading.textContent = newValue;
+            this.shadowRoot.querySelector('h2').textContent = newValue;
         } else if (name === 'artist') {
-            const artistParagraph = this.shadowRoot.querySelector('p');
-            artistParagraph.textContent = newValue;
+            this.shadowRoot.querySelector('p:nth-of-type(1)').textContent = newValue;
+        } else if (name === 'time') {
+            // Convert and format the new time value
+            let time = parseInt(newValue) || 0;
+            const minutes = Math.floor(time / 60);
+            const seconds = time % 60;
+            const formattedTime = `${minutes < 10 ? '' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+            this.shadowRoot.querySelector('p:nth-of-type(2)').textContent = formattedTime;
         }
     }
 
-    openContext () {
-        if (this?.ctxElem === undefined){
+    openContext() {
+        if (this?.ctxElem === undefined) {
             this.ctxElem = document.createElement("div");
-    
+
             this.ctxElem.classList.add("context-queue-item");
-    
+
             this.appendOptions()
-    
+
             this.shadowRoot.querySelector('.three_dots').appendChild(this.ctxElem)
-            
+
 
             this.addEventListener("mouseleave", this.closeContext);
         }
     }
 
-    closeContext () {
+    closeContext() {
         this.ctxElem.style.animation = "scaleEffectReverse 0.5s ease forwards"; // Apply the reverse animation
         setTimeout(() => {
             this.ctxElem?.remove();
             this.ctxElem = undefined;
         }, 500); // Remove the element after the animation completes
-}
+    }
 
     appendOptions() {
-        const CSS = /* css */ 
-        `
+        const CSS = /* css */
+            `
         div.option {
             width: 100%;
             height: 32px;
@@ -184,8 +199,8 @@ class QueueItem extends HTMLElement {
         }
         `
 
-        const HTML = /* html */ 
-        `
+        const HTML = /* html */
+            `
         <style> ${CSS} </style>
         <div class="option" ID="1">Add to favorite ❤</div>
         <div class="option" ID="2">Remove from queue 🗑</div>
@@ -195,7 +210,7 @@ class QueueItem extends HTMLElement {
         this.ctxElem.innerHTML = HTML
         const optionsArray = this.ctxElem.getElementsByClassName("option")
         for (let i = 0; i < optionsArray.length; i++) {
-            const optionElem = optionsArray[i]; 
+            const optionElem = optionsArray[i];
             if (typeof optionElem === 'object') {
                 optionElem.addEventListener("click", () => {
                     this.handleOption(optionElem)
@@ -205,18 +220,39 @@ class QueueItem extends HTMLElement {
     }
 
     handleOption(elem) {
-        if (elem instanceof HTMLDivElement){
+        if (elem instanceof HTMLDivElement) {
             this.closeContext()
 
             const ID = elem.getAttribute("ID")
-            if (ID == 2){
+            if (ID == 2) {
                 this.style.animation = "scaleEffectReverse 1s forwards"
-                setTimeout(()=>{
+                setTimeout(() => {
                     this.remove()
                 }, 900)
             }
         }
     }
+
+    play() {
+        const uuid = this.getAttribute("uuid");
+        fetch(`/music?uuid=${uuid}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                return response.blob(); // Get the response body as a blob
+            })
+            .then(blob => {
+                const audioURL = URL.createObjectURL(blob); // Create a URL for the blob
+                const audio = new Audio(audioURL); // Create a new Audio object
+                audio.play(); // Play the audio
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
+    }
+    
 }
 
 // Define the custom element
