@@ -1,0 +1,31 @@
+div.display > div#header {
+    display: flex;
+    width: 100vw;
+    height: fit-content;
+
+    background-color: var(--color-2);
+    padding: 16px;
+    justify-content: center;
+    grid-area: Header;
+}
+
+div#header > input#search {
+    display: block;
+    width: 25%;
+
+    caret-color: var(--color-25);
+    color: var(--color-27);
+    border: 2px solid var(--color-25);
+    background-color: var(--color-26);
+    transition: 250ms;
+}
+
+input#search::placeholder {
+    color: var(--color-27);
+}
+
+input#search:focus {
+    outline: var(--color-27) 2px solid;
+    scale: 1.2;
+    transition: 250ms;
+}
