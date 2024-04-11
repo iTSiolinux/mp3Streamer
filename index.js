@@ -23,7 +23,10 @@ app.get("/music", async (req, res) => {
         }
 
         const filePath = `${CACHE_PATH}/${uuid}.mp3`;
-
+        // Check if the MP3  cache directory exists and create it if it doesn't
+        if (!fs.existsSync(CACHE_PATH)) {
+            fs.mkdirSync(CACHE_PATH);
+        }
         // Check if the MP3 file already exists in cache
         if (fs.existsSync(filePath)) {
             console.log(`MP3 file for UUID ${uuid} already exists in cache.`);
