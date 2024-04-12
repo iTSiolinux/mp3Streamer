@@ -1,8 +1,0 @@
-div#searchRes {
-    grid-area: SearchRes;
-    display: flex;
-    flex-direction: column; 
-    gap: 10px;
-    box-sizing: content-box;
-    overflow-y: auto;
-}
