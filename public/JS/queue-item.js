@@ -10,7 +10,6 @@ class QueueItem extends HTMLElement {
         const artistName = this.getAttribute('artist') || 'Default Artist';
         let time = parseInt(this.getAttribute('time')) || 0; 
 
-        // Convert time to minutes and seconds
         const minutes = Math.floor(time / 60);
         const seconds = time % 60;
 
@@ -249,7 +248,6 @@ class QueueItem extends HTMLElement {
                 const audioURL = URL.createObjectURL(blob); // Create a URL for the blob
                 const audio = new Audio(audioURL); // Create a new Audio object
                 this.mp3 = audio;
-                console.log(this.mp3)
             })
             .catch(error => {
                 console.error('There was a problem with the fetch operation:', error);
@@ -259,11 +257,11 @@ class QueueItem extends HTMLElement {
     play () {
         this.mp3.play()
         this.loop = setInterval(()=>{
-            QueueManager.UpdatePlayerBar(this.mp3.duration, this.mp3.currentTime)
+            Q.UpdatePlayerBar(this.mp3.duration, this.mp3.currentTime)
             if (this.mp3.duration == this.mp3.currentTime){
-                QueueManager.Pause()
-                QueueManager.index++;
-                QueueManager.Play()
+                Q.Pause()
+                Q.index++;
+                Q.Play()
             }
         }, 5)
     }

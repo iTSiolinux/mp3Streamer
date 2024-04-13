@@ -105,13 +105,8 @@ class SearchItem extends HTMLElement {
     }
 
     addSong() {
-        const queue_item = document.createElement("queue-item");
-        queue_item.setAttribute("song", this.getAttribute('title'));
-        queue_item.setAttribute("artist", this.getAttribute('author'));
-        queue_item.setAttribute("time", this.getAttribute('time'));
-        queue_item.setAttribute("uuid", this.getAttribute('uuid'));
-        document.getElementById("queue").appendChild(queue_item);
-        QueueManager.AddSong(queue_item)
+        const queue_item = new Song(this.vid);
+        Q.song.Add(queue_item)
     }
 }
 

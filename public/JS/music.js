@@ -1,48 +1,5 @@
-// Queue class
-class QueueManager {
-    static Awake () {
-        this.index = 0;
-        this.queue = [];
-        this.isPlaying = false
-    }
-
-    static Play () {
-        if (!this.isPlaying && this.queue.length > 0){
-            this.index = this.index % this.queue.length;
-            
-            playBtn.style.backgroundImage = "url('/IMG/pause.png')"; 
-            this.isPlaying = true;
-            this.queue[this.index]?.play()
-        }
-    }
-
-    static Pause () {
-        if (this.isPlaying){
-            playBtn.style.backgroundImage = "url('/IMG/play.png')";
-            this.isPlaying = false;
-            this.queue[this.index]?.pause()
-        }
-    }
-
-    static AddSong (songElem) {
-        this.queue.push(songElem)
-    }
-
-    static RemoveSong (songElem) {
-        const index = this.queue.findIndex(song => song === songElem);
-        if (index !== -1) {
-            this.queue.splice(index, 1);
-        }
-        return index;
-    }
-
-    static UpdatePlayerBar (songDuration, songCurrentTime) {
-        const barShadow = document.querySelector("body > div.player_bar > div.shadow");
-        barShadow.style.width = `${songCurrentTime / songDuration}%`
-    }
-}
-
-QueueManager.Awake()
+// Queue Usage 
+const Q = new QueueManager(document.getElementById("queue"), QueueItem)
 
 // player toggle
 const playBtn = document.getElementById("playToggle");
@@ -52,9 +9,9 @@ playBtn.addEventListener("click", () => {
     const backgroundImage = getComputedStyle(playBtn).backgroundImage;
 
     if (backgroundImage.includes("play.png")) { 
-        QueueManager.Play()
+        Q.Play()
     } else {
-        QueueManager.Pause()
+        Q.Pause()
     }
 });
 
@@ -104,6 +61,7 @@ function appendSearchRes(dataSet) {
         SEARCH_ITEM.setAttribute("image", vid.thumbnail)
         SEARCH_ITEM.setAttribute("uuid", vid.videoId)
         SEARCH_ITEM.setAttribute("time", vid.seconds)
+        SEARCH_ITEM.vid = vid
 
         document.getElementById("searchRes").append(SEARCH_ITEM)
     });
