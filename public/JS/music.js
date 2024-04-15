@@ -9,9 +9,9 @@ playBtn.addEventListener("click", () => {
     const backgroundImage = getComputedStyle(playBtn).backgroundImage;
 
     if (backgroundImage.includes("play.png")) { 
-        Q.Play()
+        Q.Controller.Play()
     } else {
-        Q.Pause()
+        Q.Controller.Pause()
     }
 });
 
@@ -20,6 +20,19 @@ const searchBox = document.getElementById("search")
 searchBox.addEventListener("keydown", (event) => {
     if (event.key === "Enter") {
         if (searchBox.value.length > 4){
+            while (document.getElementById("searchRes").firstChild) {
+                document.getElementById("searchRes").removeChild(document.getElementById("searchRes").firstChild);
+            }
+
+            const loadingSVG = document.createElement("img")
+            loadingSVG.src = "/IMG/search.gif"
+            loadingSVG.classList.add("squishy_button")
+            loadingSVG.style.width = "64px"
+            loadingSVG.style.padding = "16px"
+            loadingSVG.style.margin = "16px"
+
+            document.getElementById("searchRes").append(loadingSVG)
+
             fetch("/search?query=" + encodeURIComponent(searchBox.value))
             .then(response => {
                 if (!response.ok) {

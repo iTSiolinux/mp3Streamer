@@ -65,11 +65,13 @@ app.get("/search", (req, res) => {
     YT_SEARCH(query, function (err, result) {
         const DATA = { status: "error", data: null }
         if (err) {
+            DATA.data = err;
             res.json(DATA)
+            console.error(err)
         } else {
             DATA.status = "succes"
             console.log("success " + query)
-            const first3vids = result?.videos.slice(0, 3)
+            const first3vids = result?.videos.slice(0, 14)
 
             DATA.data = first3vids
             res.json(DATA)

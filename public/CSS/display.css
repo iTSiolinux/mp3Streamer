@@ -12,3 +12,8 @@ div.display {
     overflow-y: auto;
     overflow-x: clip;
 }
+
+
+.playing {
+  background-color: var(--color-15);
+}

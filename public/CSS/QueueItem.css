@@ -1,0 +1,92 @@
+:host {
+    position: relative;
+    display: flex;
+    height: fit-content;
+
+    flex-wrap: wrap;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px; 
+}
+div.data {
+    order: -1;
+    margin-right: 10px;
+}
+
+div.three_dots {
+    width: 32px;
+    height: 32px;
+
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-image: url(/IMG/dots.png);
+    margin-top: 5%; 
+    margin-left: auto;
+}
+
+p, h2 {
+    margin: 0;
+    height: fit-content;
+}
+
+.squishy_button {
+    width: 64px;
+    height: 64px;
+
+    transition: 250ms;
+    background-color: var(--color-27);
+    border-radius: 15%;
+}
+
+.squishy_button:hover {
+    background-color: var(--color-26);
+    transition: 250ms;
+}
+
+.squishy_button:active {
+    background-color: var(--color-25);
+    transition: 250ms;
+}
+
+.context-queue-item {
+    position: absolute;
+    display: grid;
+    width: 100%;
+    height: fit-content;
+
+    z-index: 1;
+    box-sizing: border-box;
+    background-color: white;
+    left: 0;
+    top: 100%;
+    gap: 4px;
+    padding: 4px;
+    justify-content: center;
+    animation: scaleEffect 0.5s ease forwards;
+}
+
+.playing {
+    background-color: var(--color-15);
+}
+
+@keyframes scaleEffect {
+    from {
+        transform: scale(0, 0) translate(100%, -100%); /* Start from a small scale and top-right position */
+        opacity: 0; /* Start with opacity 0 */
+    }
+    to {
+        transform: scale(1, 1) translate(0, 0); /* Scale to full size and center position */
+        opacity: 1; /* Show with full opacity */
+    }
+}
+
+@keyframes scaleEffectReverse {
+    from {
+        transform: scale(1, 1) translate(0, 0); /* Start from full size and center position */
+        opacity: 1; /* Start with full opacity */
+    }
+    to {
+        transform: scale(0, 0) translate(100%, -100%); /* Scale to small size and top-right position */
+        opacity: 0; /* Hide with zero opacity */
+    }
+}
