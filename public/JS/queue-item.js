@@ -108,8 +108,8 @@ class QueueItem extends HTMLElement {
             <style> ${CSS} </style>
             <div class="option" ID="1">Add to favorite ❤</div>
             <div class="option" ID="2">Remove from queue 🗑</div>
-            <div class="option" ID="3">Move to the bottom ⏬</div>
-            <div class="option" ID="4">Move to the top ⏫</div>
+            <div class="option" ID="3">Move to the top ⏫</div>
+            <div class="option" ID="4">Move to the bottom ⏬</div>
             `
 
             this.ctxElem.innerHTML = HTML
@@ -125,19 +125,26 @@ class QueueItem extends HTMLElement {
         },
         handleOptions: (elem) => {
             if (elem instanceof HTMLDivElement) {
-                this.closeContext()
+                this.context.close()
 
                 const ID = elem.getAttribute("ID")
-                if (ID == 2) {
+                if (ID == 1){
+
+                }
+                else if (ID == 2) {
                     this.style.animation = "scaleEffectReverse 1s forwards"
                     setTimeout(() => {
                         if (Q.index == Q.RemoveSong(this)) {
                             Q.Controller.Pause()
                         }
                         clearInterval(this.loop)
-                        this.pause()
+                        this.song.pause()
                         this.remove()
                     }, 900)
+                } else if (ID == 3) {
+
+                } else if (ID == 4) {
+                    
                 }
             }
         }
@@ -168,6 +175,7 @@ class QueueItem extends HTMLElement {
             this.loop = setInterval(()=>{
                 Q.UpdatePlayerBar(this.mp3.duration, this.mp3.currentTime)
                 if (this.mp3.duration == this.mp3.currentTime){
+                    Q.Controller.Reset()
                     Q.Controller.Pause()
                     Q.index++;
                     Q.Controller.Play()
