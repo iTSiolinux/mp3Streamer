@@ -33,8 +33,27 @@ input#search:focus {
 }
 
 
-div#fav {
+div#disks-container {
     width: 64px;
     height: 64px;
-    background-color: var(--color-26);
+
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-image: url(/IMG/cd.png);
+}
+
+div#disk_div {
+    width: fit-content;
+    height: fit-content;
+    padding: 16px;
+
+    background-color: white;
+}
+
+div.track {
+    padding: 8px !important;
+
+    width: fit-content !important;
+    height: fit-content !important;
+    border-radius: 15% !important;
 }

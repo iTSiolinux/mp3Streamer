@@ -80,14 +80,14 @@ class QueueManager {
 
 class Song {
     constructor(values) {
-        this.authorName = values.author.name || "Default author name";
-        this.durationInSeconds = values.duration.seconds || 0;
+        this.authorName = values.author ? values.author.name || "Default author name" : "Default author name";
+        this.durationInSeconds = values.duration ? values.duration.seconds || 0 : 0;
         this.thumbnail = values.thumbnail || "/error.png";
         this.name = values.title || "Default name";
         this.id = values.videoId || "";
         this.vid = values;
 
-        this.element = document.createElement("queue-item");
+        this.element = document.createElement("queue-item"); // Create custom queue-item element
 
         this.element.setAttribute("song", this.name);
         this.element.setAttribute("artist", this.authorName);
@@ -96,7 +96,9 @@ class Song {
     }
 
     Remove() {
-        this.element.song.pause()
-        this.element?.remove()
+        if (this.element.song) {
+            this.element.song.pause(); // Assuming this is how you access the audio element
+        }
+        this.element?.remove();
     }
 }
