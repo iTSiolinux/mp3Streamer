@@ -51,9 +51,20 @@ div#disk_div {
 }
 
 div.track {
-    padding: 8px !important;
+    width: fit-content;
+    height: fit-content;
 
-    width: fit-content !important;
-    height: fit-content !important;
-    border-radius: 15% !important;
+    background-color: var(--color-26);
+    padding: 8px;
+    border-radius: 5%;
+}
+
+.plus {
+    width: 32px;
+    height: 32px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-image: url(/IMG/plus.png);
+    margin-top: 5%; 
+    margin-left: auto;
 }

@@ -119,11 +119,23 @@ diskBtn.addEventListener("click", () => {
         const key = localStorage.key(i);
         if (key.startsWith("disk-")) {
             const diskData = JSON.parse(localStorage.getItem(key));
+
             const diskDiv = document.createElement("div");
             diskDiv.classList.add("track")
-            diskDiv.classList.add("squishy_button")
-            
-            diskDiv.textContent = `Disk Name: ${diskData.name}, Track: ${diskData.track.length}`;
+
+            const a = document.createElement("a")
+            a.textContent = `Disk Name: ${diskData.name}, Track: ${diskData.track.length}`;
+            diskDiv.append(a)
+
+            const appendDisk_btn = document.createElement("div")
+            appendDisk_btn.classList.add("plus")
+            appendDisk_btn.classList.add("squishy_button")
+            appendDisk_btn.addEventListener("click", () => {
+                // * TODO: append all songs in disk to the queue.
+            })
+
+            diskDiv.append(appendDisk_btn)
+
             disks_div.appendChild(diskDiv);
         }
     }
