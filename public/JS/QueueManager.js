@@ -29,16 +29,35 @@ class QueueManager {
     Controller = {
         Play: () => {
             this.index = Math.max(this.index % this.queue.length, 0);
-
+            this.queue[this.index]?.element.song.play()
+            const playBtn = document.getElementById("playToggle");
             playBtn.style.backgroundImage = "url('/IMG/pause.png')";
-            this.queue[this.index].element.song.play()
+
+            this.Controller.loop = setInterval(() => {
+                const mp3 = this.queue[this.index]?.element.mp3
+                if (mp3 instanceof Audio){
+                    this.UpdatePlayerBar(mp3.duration, mp3.currentTime)
+                    if (mp3.duration == mp3.currentTime) {
+                        Q.Controller.Pause()
+                        Q.Controller.Reset()
+                        Q.index++;
+                        Q.Controller.Play()
+                    }
+                } else {
+                    this.UpdatePlayerBar(100, 0)
+                }
+
+
+            }, 5)
         },
         Reset: () => {
             this.queue[this.index].element.song.reset()
         },
         Pause: () => {
+            this.queue[this.index]?.element.song.pause()
+            const playBtn = document.getElementById("playToggle");
             playBtn.style.backgroundImage = "url('/IMG/play.png')";
-            this.queue[this.index].element.song.pause()
+
         },
         Next: () => {
             this.Controller.Pause()
@@ -54,7 +73,8 @@ class QueueManager {
             this.index--;
             this.index = Math.min(this.index, 0)
             this.Controller.Play()
-        }
+        },
+        loop: null
     }
 }
 
@@ -76,7 +96,7 @@ class Song {
     }
 
     Remove() {
-        this.element?.pause()
+        this.element.song.pause()
         this.element?.remove()
     }
 }

@@ -134,8 +134,11 @@ class QueueItem extends HTMLElement {
                 else if (ID == 2) {
                     this.style.animation = "scaleEffectReverse 1s forwards"
                     setTimeout(() => {
-                        if (Q.index == Q.RemoveSong(this)) {
+                        const songIndex = Q.queue.findIndex(i => i.element == this)
+                        if (Q.index == songIndex) {
                             Q.Controller.Pause()
+                            Q.Co
+                            Q.song.Remove(Q.queue[songIndex])
                         }
                         clearInterval(this.loop)
                         this.song.pause()
@@ -172,22 +175,12 @@ class QueueItem extends HTMLElement {
         play: () => {
             this.mp3.play()
             this.classList.add("playing")
-            this.loop = setInterval(()=>{
-                Q.UpdatePlayerBar(this.mp3.duration, this.mp3.currentTime)
-                if (this.mp3.duration == this.mp3.currentTime){
-                    Q.Controller.Reset()
-                    Q.Controller.Pause()
-                    Q.index++;
-                    Q.Controller.Play()
-                }
-            }, 5)
         },
         reset: () => {
             this.classList.remove("playing")
             this.mp3.currentTime = 0;
         },
         pause: () => {
-            clearInterval(this.loop)
             this.mp3.pause()
         }
     }
