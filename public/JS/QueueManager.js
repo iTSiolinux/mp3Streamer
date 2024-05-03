@@ -80,11 +80,11 @@ class QueueManager {
 
 class Song {
     constructor(values) {
-        this.authorName = values.author ? values.author.name || "Default author name" : "Default author name";
-        this.durationInSeconds = values.duration ? values.duration.seconds || 0 : 0;
+        this.authorName = (values.author || values.authorName) ? (values.author?.name || values.authorName || "Default author name passed") : "Default author name";
+        this.durationInSeconds = (values.duration || values.durationInSeconds)  ? values.duration?.seconds || values.durationInSeconds || -1 : 0;
         this.thumbnail = values.thumbnail || "/error.png";
-        this.name = values.title || "Default name";
-        this.id = values.videoId || "";
+        this.name = values.title || values.name || "Default name";
+        this.id = values.videoId || values.id || "";
         this.vid = values;
 
         this.element = document.createElement("queue-item"); // Create custom queue-item element

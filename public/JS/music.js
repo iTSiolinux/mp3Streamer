@@ -81,7 +81,7 @@ function appendSearchRes(dataSet) {
 }
 
 // load a default disk of favorite if not exsits
-if (localStorage.getItem("disk-fav") == null) {
+if (localStorage.length < 1 ) {
     fetch("/search?query=Thunder")
         .then(response => {
             if (!response.ok) {
@@ -122,16 +122,30 @@ diskBtn.addEventListener("click", () => {
 
             const diskDiv = document.createElement("div");
             diskDiv.classList.add("track")
+            diskDiv.style.textAlign = "center"
+
+
 
             const a = document.createElement("a")
             a.textContent = `Disk Name: ${diskData.name}, Track: ${diskData.track.length}`;
             diskDiv.append(a)
 
+            for (let i = 0; i < diskData.track.length; i++ ){
+                song = diskData.track[i]
+                const p = document.createElement("p")
+                p.textContent = song.name + "\n" + song.authorName
+                diskDiv.append(p)
+            }
+
             const appendDisk_btn = document.createElement("div")
             appendDisk_btn.classList.add("plus")
             appendDisk_btn.classList.add("squishy_button")
             appendDisk_btn.addEventListener("click", () => {
-                // * TODO: append all songs in disk to the queue.
+                for (let i = 0; i < diskData.track.length; i++) {
+                    const songData = diskData.track[i];
+                    const song = new Song(songData); // Pass the song data to the Song constructor
+                    Q.song.Add(song);
+                }
             })
 
             diskDiv.append(appendDisk_btn)
@@ -145,4 +159,20 @@ diskBtn.addEventListener("click", () => {
     disks_div.style.position = "absolute";
     disks_div.style.top = disksContainer.offsetTop + "px";
     disks_div.style.left = disksContainer.offsetLeft + "px";
+
+    disks_div.addEventListener("mouseleave", ()=>{
+        disks_div.remove()
+    })
+
+});
+
+
+const save_btn = document.getElementById("diskName")
+save_btn.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+        if (save_btn.value.length > 4) {
+            const o = new Disk(save_btn.value, Q.queue).save()
+            console.log(o)
+        }
+    }
 });

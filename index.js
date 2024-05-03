@@ -1,6 +1,6 @@
 const express = require("express"),
     app = express(),
-    PORT = 5200,
+    PORT = 5000,
     HTML_PATH = __dirname + '/templates/',
     CACHE_PATH = __dirname + '/.cache/',
     fs = require('fs'),

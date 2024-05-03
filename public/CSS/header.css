@@ -9,7 +9,7 @@ div.display > div#header {
     grid-area: Header;
 }
 
-div#header > input#search {
+input.input {
     display: block;
     width: 25%;
 
@@ -22,11 +22,11 @@ div#header > input#search {
     margin-top: 16px;
 }
 
-input#search::placeholder {
+input.input::placeholder {
     color: var(--color-27);
 }
 
-input#search:focus {
+input.input:focus {
     outline: var(--color-27) 2px solid;
     scale: 1.2;
     transition: 250ms;
@@ -59,7 +59,7 @@ div.track {
     border-radius: 5%;
 }
 
-.plus {
+div.track > .plus {
     width: 32px;
     height: 32px;
     background-repeat: no-repeat;
@@ -67,4 +67,14 @@ div.track {
     background-image: url(/IMG/plus.png);
     margin-top: 5%; 
     margin-left: auto;
+}
+
+input#diskName {
+    height: 75%;
+    width: 75%;
+    margin-top: 0;
+}
+
+input#diskName:focus {
+    scale: 1.0;
 }

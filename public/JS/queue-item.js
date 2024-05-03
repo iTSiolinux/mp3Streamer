@@ -6,7 +6,7 @@ class QueueItem extends HTMLElement {
 
     //  observed attributes
     static get observedAttributes() {
-        return ['song', 'artist', 'time', 'uuid'];
+        return ['song', 'artist', 'time', 'uuid', 'id'];
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
@@ -20,7 +20,7 @@ class QueueItem extends HTMLElement {
             const seconds = time % 60;
             const formattedTime = `${minutes < 10 ? '' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
             this.shadowRoot.querySelector('p:nth-of-type(2)').textContent = formattedTime;
-        } else if (name === 'uuid') {
+        } else if (name === 'uuid' || name === "id") {
             this.song.fetch()
         }
     }
