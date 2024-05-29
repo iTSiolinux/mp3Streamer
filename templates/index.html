@@ -25,13 +25,22 @@
             <input type="text" class="input" id="search" placeholder="Search for a song">
             <div id="disks-container" class="squishy_button"></div>
         </div>
-        <a id="save"><input type="text" id="diskName" placeholder="Enter disk name!" class="input"><div id="save_btn" class="squishy_button"></div></a>
+        <a id="save">
+            <select id="diskSelect" class="input">
+                <option value="" disabled selected>Select a disk</option>
+                <option value="new">Add new disk...</option>
+            </select>
+            <input type="text" id="diskName" placeholder="Enter disk name!" class="input">
+            <div id="save_btn" class="squishy_button"></div>
+        </a>
+
         <div id="queue">
             <h2>Queue</h2>
         </div>
-        <div id="searchRes">
-        </div>
+        <div id="searchRes"></div>
     </div>
+    
+    
     <div class="player_bar">
         <div class="shadow"></div>
         <div class="player_gui">

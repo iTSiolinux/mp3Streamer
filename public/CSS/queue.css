@@ -32,6 +32,7 @@ a#save {
     height: fit-content;
     justify-content: space-around;
     align-items: center;
+    flex-wrap: wrap;
 }
 
 div#save_btn {

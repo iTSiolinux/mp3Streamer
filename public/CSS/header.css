@@ -2,17 +2,15 @@ div.display > div#header {
     display: flex;
     width: 100vw;
     height: fit-content;
-
     background-color: var(--color-2);
     padding: 16px;
     justify-content: space-around;
     grid-area: Header;
 }
 
-input.input {
+input.input, select.input {
     display: block;
     width: 25%;
-
     caret-color: var(--color-25);
     color: var(--color-27);
     border: 2px solid var(--color-25);
@@ -22,21 +20,19 @@ input.input {
     margin-top: 16px;
 }
 
-input.input::placeholder {
+input.input::placeholder, select.input option {
     color: var(--color-27);
 }
 
-input.input:focus {
+input.input:focus, select.input:focus {
     outline: var(--color-27) 2px solid;
     scale: 1.2;
     transition: 250ms;
 }
 
-
 div#disks-container {
     width: 64px;
     height: 64px;
-
     background-repeat: no-repeat;
     background-size: cover;
     background-image: url(/IMG/cd.png);
@@ -46,27 +42,43 @@ div#disk_div {
     width: fit-content;
     height: fit-content;
     padding: 16px;
-
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
     background-color: white;
 }
 
 div.track {
     width: fit-content;
     height: fit-content;
-
     background-color: var(--color-26);
     padding: 8px;
     border-radius: 5%;
 }
 
-div.track > .plus {
+div.track > div > .plus {
     width: 32px;
     height: 32px;
     background-repeat: no-repeat;
     background-size: cover;
     background-image: url(/IMG/plus.png);
-    margin-top: 5%; 
+    margin-top: 5%;
     margin-left: auto;
+}
+
+div.track > div > .remove {
+    width: 32px;
+    height: 32px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-image: url(/IMG/delete.png);
+    margin-top: 5%;
+}
+
+div.track > div {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 16px;
 }
 
 input#diskName {
@@ -77,4 +89,19 @@ input#diskName {
 
 input#diskName:focus {
     scale: 1.0;
+}
+
+select.input {
+    width: 75%;
+    height: 32px;
+    margin-top: 16px;
+    background-color: var(--color-26);
+    border: 2px solid var(--color-25);
+    color: var(--color-27);
+    transition: 250ms;
+}
+
+select.input:focus {
+    outline: var(--color-27) 2px solid;
+    transition: 250ms;
 }

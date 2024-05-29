@@ -79,100 +79,192 @@ function appendSearchRes(dataSet) {
         document.getElementById("searchRes").append(SEARCH_ITEM)
     });
 }
+document.addEventListener("DOMContentLoaded", () => {
+    const diskSelect = document.getElementById("diskSelect");
+    const newDiskInput = document.getElementById("diskName");
+    const saveDiskBTN = document.getElementById("save_btn");
 
-// load a default disk of favorite if not exsits
-if (localStorage.length < 1 ) {
-    fetch("/search?query=Thunder")
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
+    // Populate the dropdown with existing disks
+    function populateDisks() {
+        diskSelect.innerHTML = `
+            <option value="" disabled selected>Select a disk</option>
+            <option value="new">Add new disk...</option>
+        `;
+
+        for (let i = 0; i < localStorage.length; i++) {
+            const key = localStorage.key(i);
+            if (key.startsWith("disk-")) {
+                const diskData = JSON.parse(localStorage.getItem(key));
+                const option = document.createElement("option");
+                option.value = diskData.uuid;
+                option.textContent = diskData.name;
+                diskSelect.appendChild(option);
             }
-            return response.json();
-        })
-        .then(data => {
-            if (data.status == "succes"){
-                const song = new Song(data["data"][0])
-                const disk = new Disk("fav", song)
-                disk.save()
-            }
-
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
-}
-
-const diskBtn = document.getElementById("disks-container");
-diskBtn.addEventListener("click", () => {
-    const disksContainer = document.getElementById("disks-container");
-
-    // Clear existing content using a while loop
-    while (disksContainer?.firstChild instanceof HTMLElement) {
-        disksContainer.removeChild(disksContainer.firstChild);
+        }
     }
 
-    const disks_div = document.createElement("div");
-    disks_div.id = "disk_div";
-
-    // Iterate over localStorage items and display disk data
-    for (let i = 0; i < localStorage.length; i++) {
-        const key = localStorage.key(i);
-        if (key.startsWith("disk-")) {
-            const diskData = JSON.parse(localStorage.getItem(key));
-
-            const diskDiv = document.createElement("div");
-            diskDiv.classList.add("track")
-            diskDiv.style.textAlign = "center"
-
-
-
-            const a = document.createElement("a")
-            a.textContent = `Disk Name: ${diskData.name}, Track: ${diskData.track.length}`;
-            diskDiv.append(a)
-
-            for (let i = 0; i < diskData.track.length; i++ ){
-                song = diskData.track[i]
-                const p = document.createElement("p")
-                p.textContent = song.name + "\n" + song.authorName
-                diskDiv.append(p)
+    function findDiskByName(name) {
+        for (let i = 0; i < localStorage.length; i++) {
+            const key = localStorage.key(i);
+            if (key.startsWith("disk-")) {
+                const diskData = JSON.parse(localStorage.getItem(key));
+                if (diskData.name === name) {
+                    return diskData;
+                }
             }
+        }
+        return null;
+    }
 
-            const appendDisk_btn = document.createElement("div")
-            appendDisk_btn.classList.add("plus")
-            appendDisk_btn.classList.add("squishy_button")
-            appendDisk_btn.addEventListener("click", () => {
-                for (let i = 0; i < diskData.track.length; i++) {
-                    const songData = diskData.track[i];
-                    const song = new Song(songData); // Pass the song data to the Song constructor
-                    Q.song.Add(song);
+    function deleteDiskByUUID(uuid) {
+        localStorage.removeItem("disk-" + uuid + "-disk");
+    }
+
+    function saveNewDisk() {
+        const diskName = newDiskInput.value;
+        const existingDisk = findDiskByName(diskName);
+
+        if (existingDisk) {
+            deleteDiskByUUID(existingDisk.uuid);
+        }
+
+        const newDisk = new Disk(diskName, Q.queue); // Assuming Q.queue contains the current queue of songs
+        newDisk.save();
+
+        newDiskInput.value = "";
+        newDiskInput.style.display = "none";
+
+        populateDisks();
+
+        diskSelect.value = newDisk.uuid;
+    }
+
+    function saveToExistingDisk(diskUUID) {
+        deleteDiskByUUID(diskUUID);
+
+        const diskName = diskSelect.options[diskSelect.selectedIndex].text;
+        const newDisk = new Disk(diskName, Q.queue);
+        newDisk.save();
+
+        populateDisks();
+
+        diskSelect.value = newDisk.uuid;
+    }
+
+    populateDisks();
+
+    saveDiskBTN.addEventListener("click", () => {
+        if (diskSelect.value === "new") {
+            saveNewDisk();
+        } else {
+            saveToExistingDisk(diskSelect.value);
+        }
+    });
+
+    diskSelect.addEventListener("change", (event) => {
+        if (event.target.value === "new") {
+            newDiskInput.style.display = "inline";
+            newDiskInput.focus();
+        } else {
+            newDiskInput.style.display = "none";
+        }
+    });
+
+    newDiskInput.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" && newDiskInput.value.length > 4) {
+            saveNewDisk();
+        }
+    });
+
+    if (localStorage.length < 1) {
+        fetch("/search?query=Thunder")
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.status === "success") {
+                    const song = new Song(data.data[0]);
+                    const disk = new Disk("fav", song);
+                    disk.save();
+                    populateDisks();
                 }
             })
-
-            diskDiv.append(appendDisk_btn)
-
-            disks_div.appendChild(diskDiv);
-        }
+            .catch(error => {
+                console.error('Error:', error);
+            });
     }
 
-    document.body.appendChild(disks_div);
+    const diskBtn = document.getElementById("disks-container");
+    diskBtn.addEventListener("click", () => {
+        const disksContainer = document.getElementById("disks-container");
 
-    disks_div.style.position = "absolute";
-    disks_div.style.top = disksContainer.offsetTop + "px";
-    disks_div.style.left = disksContainer.offsetLeft + "px";
+        disksContainer.innerHTML = "";
 
-    disks_div.addEventListener("mouseleave", ()=>{
-        disks_div.remove()
-    })
+        const disksDiv = document.createElement("div");
+        disksDiv.id = "disk_div";
 
-});
+        const fragment = document.createDocumentFragment();
 
+        for (let i = 0; i < localStorage.length; i++) {
+            const key = localStorage.key(i);
+            if (key.startsWith("disk-")) {
+                const diskData = JSON.parse(localStorage.getItem(key));
 
-const save_btn = document.getElementById("diskName")
-save_btn.addEventListener("keydown", (event) => {
-    if (event.key === "Enter") {
-        if (save_btn.value.length > 4) {
-            const o = new Disk(save_btn.value, Q.queue).save()
-            console.log(o)
+                const diskDiv = document.createElement("div");
+                diskDiv.classList.add("track");
+                diskDiv.style.textAlign = "center";
+
+                const a = document.createElement("a");
+                a.textContent = `Disk Name: ${diskData.name}, Track: ${diskData.track.length}`;
+                diskDiv.append(a);
+
+                for (let j = 0; j < diskData.track.length; j++) {
+                    const song = diskData.track[j];
+                    const p = document.createElement("p");
+                    p.textContent = `${song.name}\n${song.authorName}`;
+                    diskDiv.append(p);
+                }
+
+                const appendDiskBtn = document.createElement("div");
+                appendDiskBtn.classList.add("plus", "squishy_button");
+                appendDiskBtn.addEventListener("click", () => {
+                    for (let j = 0; j < diskData.track.length; j++) {
+                        const songData = diskData.track[j];
+                        const song = new Song(songData);
+                        Q.song.Add(song);
+                    }
+                });
+
+                const removeDisk = document.createElement("div");
+                removeDisk.classList.add("remove", "squishy_button");
+                removeDisk.addEventListener("click", () => {
+                    deleteDiskByUUID(diskData.uuid)
+                    populateDisks()
+                });
+
+                const ButtonDiv = document.createElement("div")
+                ButtonDiv.append(appendDiskBtn);
+                ButtonDiv.append(removeDisk);
+                diskDiv.append(ButtonDiv)
+
+                fragment.appendChild(diskDiv);
+            }
         }
-    }
+
+        disksDiv.appendChild(fragment);
+        if (disksDiv.children.length){
+            document.body.appendChild(disksDiv);
+
+            disksDiv.style.position = "absolute";
+            disksDiv.style.top = `${disksContainer.offsetTop}px`;
+            disksDiv.style.left = `${disksContainer.offsetLeft}px`;
+    
+            disksDiv.addEventListener("mouseleave", () => {
+                disksDiv.remove();
+            });
+        }
+    });
 });

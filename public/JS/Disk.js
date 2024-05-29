@@ -18,6 +18,7 @@ class Disk {
     }
 
     save() {
+        console.log(this.uuid + " saving Disk!" )
         localStorage.setItem("disk-" + this.uuid + "-disk", JSON.stringify(this));
     }
 
